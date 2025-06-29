@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 const archiver = require('archiver');
 const compression = require('compression');
 const path = require('path');
@@ -30,9 +30,14 @@ app.post('/api/search', async (req, res) => {
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
                 '--disable-dev-shm-usage',
-                '--disable-gpu'
+                '--disable-gpu',
+                '--no-first-run',
+                '--no-zygote',
+                '--single-process'
             ],
-            executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome'
+            headless: true,
+            ignoreHTTPSErrors: true,
+            timeout: 0 // No timeout
         });
         const page = await browser.newPage();
 
