@@ -10,6 +10,14 @@ app.use(cors());
 app.use(express.json());
 app.use(compression());
 
+// Serve static files from the public directory
+app.use(express.static('public'));
+
+// Handle root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.post('/api/search', async (req, res) => {
     const { query } = req.body;
     if (!query || typeof query !== 'string') {
