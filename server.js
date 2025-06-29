@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const archiver = require('archiver');
 const compression = require('compression');
 const path = require('path');
@@ -18,7 +18,13 @@ app.post('/api/search', async (req, res) => {
 
     try {
         const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-gpu'
+            ],
+            executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome'
         });
         const page = await browser.newPage();
 
